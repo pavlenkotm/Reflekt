@@ -1,0 +1,45 @@
+# Environment
+.env
+venv/
+env/
+ENV/
+.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated files
+*.png
+*.jpg
+*.json
+!package.json
+!tsconfig.json
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+
+# IPFS
+ipfs_cache/
+
+# Contracts
+artifacts/
+cache/
+node_modules/
