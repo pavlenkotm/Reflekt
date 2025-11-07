@@ -1,0 +1,14 @@
+[package]
+name = "TokenSwap"
+version = "1.0.0"
+authors = ["Reflekt"]
+
+[addresses]
+reflekt = "_"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dev-dependencies]
