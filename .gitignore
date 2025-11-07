@@ -1,5 +1,7 @@
-# Environment
+# Environment Variables
 .env
+.env.local
+.env.*.local
 venv/
 env/
 ENV/
@@ -14,32 +16,118 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node.js / TypeScript / JavaScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+build/
+*.tsbuildinfo
+.next/
+out/
+
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+.gradle/
+build/
+target/
+*.iml
+
+# C++
+*.o
+*.obj
+*.out
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+
+# Solidity / Hardhat / Foundry
+artifacts/
+cache/
+typechain/
+typechain-types/
+out/
+broadcast/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*.swn
+.DS_Store
 
 # Generated files
 *.png
 *.jpg
+*.jpeg
+*.gif
+!assets/**
+!images/**
 *.json
 !package.json
 !tsconfig.json
+!hardhat.config.json
+!foundry.json
+!**/deployments/**/*.json
 
 # Logs
 *.log
 logs/
+npm-debug.log*
+yarn-debug.log*
 
 # Database
 *.db
 *.sqlite
+*.sqlite3
 
 # IPFS
 ipfs_cache/
 
-# Contracts
-artifacts/
-cache/
-node_modules/
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Secrets
+*.pem
+*.key
+!**/*.pub
+private_keys/
+secrets/

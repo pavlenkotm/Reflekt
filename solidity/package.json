@@ -1,0 +1,28 @@
+{
+  "name": "simple-token-solidity",
+  "version": "1.0.0",
+  "description": "ERC-20 token implementation with OpenZeppelin",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia"
+  },
+  "keywords": [
+    "ethereum",
+    "solidity",
+    "erc20",
+    "token",
+    "web3",
+    "smart-contracts"
+  ],
+  "author": "Reflekt",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0"
+  }
+}
