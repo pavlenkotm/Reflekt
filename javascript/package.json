@@ -1,0 +1,32 @@
+{
+  "name": "@reflekt/javascript-web3",
+  "version": "1.0.0",
+  "description": "Web3.js examples for Reflekt multi-language repository",
+  "main": "wallet-manager.js",
+  "scripts": {
+    "test": "mocha test/**/*.test.js --timeout 10000",
+    "lint": "eslint *.js test/*.js"
+  },
+  "keywords": [
+    "web3",
+    "ethereum",
+    "blockchain",
+    "javascript",
+    "web3.js"
+  ],
+  "author": "Reflekt Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "web3": "^4.3.0",
+    "@ethereumjs/common": "^4.1.0",
+    "@ethereumjs/tx": "^5.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10",
+    "eslint": "^8.55.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
