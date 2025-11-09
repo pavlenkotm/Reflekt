@@ -20,22 +20,25 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd python
           pip install -r requirements.txt
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov flake8
 
       - name: Lint with flake8
         run: |
-          pip install flake8
-          flake8 python/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 python/ src/ --count --select=E9,F63,F7,F82 --show-source --statistics
 
-      - name: Run tests
+      - name: Run Python CLI tests
         run: |
           cd python
-          pytest --verbose || echo "No tests found"
+          pytest tests/ --verbose --cov
 
-  typescript-lint:
-    name: TypeScript Lint
+      - name: Run Reputation Score tests
+        run: |
+          cd src
+          pytest tests/ --verbose --cov
+
+  typescript-tests:
+    name: TypeScript Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -53,15 +56,20 @@ jobs:
       - name: Lint
         run: |
           cd typescript
-          npm run lint || echo "Linting skipped"
+          npm run lint
 
       - name: Type check
         run: |
           cd typescript
           npx tsc --noEmit
 
-  solidity-compile:
-    name: Solidity Compilation
+      - name: Run tests
+        run: |
+          cd typescript
+          npm test
+
+  javascript-tests:
+    name: JavaScript Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -73,16 +81,62 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd javascript
+          npm install
+
+      - name: Lint
+        run: |
+          cd javascript
+          npm run lint
+
+      - name: Run tests
+        run: |
+          cd javascript
+          npm test
+
+  solidity-tests:
+    name: Solidity Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (SimpleToken)
+        run: |
           cd solidity
           npm install
 
-      - name: Compile contracts
+      - name: Compile SimpleToken
         run: |
           cd solidity
-          npx hardhat compile || echo "Compilation skipped"
+          npx hardhat compile
 
-  go-build:
-    name: Go Build
+      - name: Test SimpleToken
+        run: |
+          cd solidity
+          npx hardhat test
+
+      - name: Install dependencies (ReputationNFT)
+        run: |
+          cd contracts
+          npm install
+
+      - name: Compile ReputationNFT
+        run: |
+          cd contracts
+          npx hardhat compile
+
+      - name: Test ReputationNFT
+        run: |
+          cd contracts
+          npx hardhat test
+
+  go-tests:
+    name: Go Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -92,14 +146,28 @@ jobs:
         with:
           go-version: '1.21'
 
-      - name: Build
+      - name: Download dependencies
         run: |
           cd go
           go mod download
+
+      - name: Build
+        run: |
+          cd go
           go build -v ./...
 
-  rust-build:
-    name: Rust Build
+      - name: Run tests
+        run: |
+          cd go
+          go test -v -race -coverprofile=coverage.out ./...
+
+      - name: Check test coverage
+        run: |
+          cd go
+          go tool cover -func=coverage.out
+
+  rust-tests:
+    name: Rust Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -109,11 +177,27 @@ jobs:
         with:
           toolchain: stable
           override: true
+          components: rustfmt, clippy
+
+      - name: Check formatting
+        run: |
+          cd rust
+          cargo fmt -- --check
+
+      - name: Lint with clippy
+        run: |
+          cd rust
+          cargo clippy -- -D warnings
 
       - name: Build
         run: |
           cd rust
-          cargo build --verbose || echo "Build skipped"
+          cargo build --verbose
+
+      - name: Run tests
+        run: |
+          cd rust
+          cargo test --verbose
 
   cpp-build:
     name: C++ Build
@@ -129,7 +213,7 @@ jobs:
       - name: Build
         run: |
           cd cpp
-          g++ -std=c++17 -o keccak256 keccak256.cpp || echo "Build skipped"
+          g++ -std=c++17 -Wall -Wextra -o keccak256 keccak256.cpp
 
   markdown-lint:
     name: Markdown Lint

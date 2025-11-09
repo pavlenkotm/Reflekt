@@ -35,13 +35,14 @@ Each example includes:
 
 ```
 Reflekt/
-├── solidity/          # ERC-20 token with OpenZeppelin
+├── solidity/          # ERC-20 token with OpenZeppelin + tests
 ├── vyper/             # ETH vault contract
-├── rust/              # Solana Anchor program
+├── rust/              # Solana Anchor program + tests
 ├── move/              # Aptos token swap DEX
-├── typescript/        # Ethers.js & Viem utilities
-├── python/            # Web3.py CLI tools
-├── go/                # Ethereum signature verifier
+├── typescript/        # Ethers.js & Viem utilities + tests
+├── javascript/        # Web3.js wallet manager + tests
+├── python/            # Web3.py CLI tools + tests
+├── go/                # Ethereum signature verifier + tests
 ├── cpp/               # Keccak256 cryptographic utilities
 ├── java/              # Web3j wallet manager
 ├── swift/             # iOS/macOS WalletKit
@@ -50,10 +51,13 @@ Reflekt/
 ├── zig/               # High-performance crypto for WASM
 ├── ruby/              # Blockchain data indexer
 ├── html-css/          # DApp landing page
-├── contracts/         # Original Reputation NFT project
-├── src/               # Original Python backend
+├── contracts/         # Original Reputation NFT project + tests
+├── src/               # Original Python backend + tests
 ├── frontend/          # Original Streamlit frontend
-└── .github/           # CI/CD workflows
+├── .github/           # CI/CD workflows (improved)
+├── Dockerfile         # Multi-stage Docker build
+├── docker-compose.yml # Development & testing services
+└── DOCKER.md          # Docker documentation
 ```
 
 ---
@@ -257,6 +261,82 @@ git push origin feature/amazing-addition
 ```
 
 **Commit Convention**: We follow [Conventional Commits](https://www.conventionalcommits.org/)
+
+---
+
+## 🧪 Testing
+
+All language implementations now include comprehensive test suites!
+
+### Run All Tests
+
+```bash
+# Using Docker
+docker-compose up test
+
+# Or run individually
+cd python && pytest tests/ --verbose
+cd typescript && npm test
+cd javascript && npm test
+cd go && go test -v ./...
+cd solidity && npx hardhat test
+cd contracts && npx hardhat test
+```
+
+### Test Coverage
+
+- **Python**: pytest with coverage reporting
+- **TypeScript**: Jest with mock providers
+- **JavaScript**: Mocha + Chai for Web3.js
+- **Go**: Native testing with race detection
+- **Solidity**: Hardhat test framework
+
+See [`TESTING.md`](./TESTING.md) for detailed testing guide.
+
+---
+
+## 🐳 Docker Support
+
+Complete Docker setup for development and testing.
+
+### Quick Start with Docker
+
+```bash
+# Start development environment
+docker-compose up -d dev
+docker-compose exec dev bash
+
+# Run all tests
+docker-compose up test
+
+# Start API and frontend
+docker-compose up -d api frontend
+
+# Local blockchain
+docker-compose up -d hardhat
+```
+
+### Available Services
+
+- `dev` - Full development environment (Python, Node, Go, Rust, C++)
+- `test` - Run complete test suite
+- `api` - Python FastAPI backend (port 8000)
+- `frontend` - Streamlit app (port 8501)
+- `hardhat` - Local Ethereum network (port 8545)
+
+See [`DOCKER.md`](./DOCKER.md) for complete Docker documentation.
+
+---
+
+## 📦 Deployments
+
+Reference contract deployments on testnets and mainnet.
+
+See [`DEPLOYMENTS.md`](./DEPLOYMENTS.md) for:
+- Deployed contract addresses
+- Network configurations
+- Interaction examples
+- Verification commands
 
 ---
 

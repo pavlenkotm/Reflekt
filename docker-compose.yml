@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # Development environment with all languages
+  dev:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/workspace
+      - node_modules_typescript:/workspace/typescript/node_modules
+      - node_modules_javascript:/workspace/javascript/node_modules
+      - node_modules_solidity:/workspace/solidity/node_modules
+      - node_modules_contracts:/workspace/contracts/node_modules
+    working_dir: /workspace
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    environment:
+      - WEB3_RPC_URL=${WEB3_RPC_URL:-https://eth.llamarpc.com}
+
+  # Testing environment
+  test:
+    build:
+      context: .
+      target: testing
+    volumes:
+      - .:/workspace
+    environment:
+      - WEB3_RPC_URL=${WEB3_RPC_URL:-https://eth.llamarpc.com}
+
+  # Python API service
+  api:
+    build:
+      context: .
+      target: production
+    ports:
+      - "8000:8000"
+    environment:
+      - WEB3_RPC_URL=${WEB3_RPC_URL:-https://eth.llamarpc.com}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+    restart: unless-stopped
+
+  # Streamlit frontend
+  frontend:
+    build:
+      context: .
+      target: python-env
+    command: streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./frontend:/app/frontend
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # Hardhat local blockchain
+  hardhat:
+    build:
+      context: .
+      target: node-env
+    command: npx hardhat node --hostname 0.0.0.0
+    working_dir: /app/contracts
+    ports:
+      - "8545:8545"
+    restart: unless-stopped
+
+  # Python tests only
+  test-python:
+    build:
+      context: .
+      target: python-env
+    command: bash -c "cd python && pytest tests/ --verbose && cd ../src && pytest tests/ --verbose"
+    volumes:
+      - ./python:/app/python
+      - ./src:/app/src
+
+  # TypeScript tests only
+  test-typescript:
+    build:
+      context: .
+      target: node-env
+    command: bash -c "cd typescript && npm test"
+    volumes:
+      - ./typescript:/app/typescript
+
+  # JavaScript tests only
+  test-javascript:
+    build:
+      context: .
+      target: node-env
+    command: bash -c "cd javascript && npm test"
+    volumes:
+      - ./javascript:/app/javascript
+
+  # Go tests only
+  test-go:
+    build:
+      context: .
+      target: go-env
+    command: bash -c "cd go && go test -v ./..."
+    volumes:
+      - ./go:/app/go
+
+  # Solidity tests only
+  test-solidity:
+    build:
+      context: .
+      target: node-env
+    command: bash -c "cd solidity && npx hardhat test && cd ../contracts && npx hardhat test"
+    volumes:
+      - ./solidity:/app/solidity
+      - ./contracts:/app/contracts
+
+volumes:
+  node_modules_typescript:
+  node_modules_javascript:
+  node_modules_solidity:
+  node_modules_contracts:
