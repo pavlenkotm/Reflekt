@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title ReputationNFT
@@ -12,9 +11,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @notice Each NFT contains metadata stored on IPFS with reputation score and tier
  */
 contract ReputationNFT is ERC721, ERC721URIStorage, Ownable {
-    using Counters for Counters.Counter;
-
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _tokenIdCounter;
 
     // Mapping from address to token ID (one badge per address)
     mapping(address => uint256) public addressToTokenId;
@@ -50,7 +47,7 @@ contract ReputationNFT is ERC721, ERC721URIStorage, Ownable {
      */
     constructor() ERC721("Web3 Reputation Badge", "W3REP") Ownable(msg.sender) {
         // Start token IDs at 1
-        _tokenIdCounter.increment();
+        _tokenIdCounter = 1;
     }
 
     /**
@@ -70,8 +67,8 @@ contract ReputationNFT is ERC721, ERC721URIStorage, Ownable {
         require(reputationScore <= 100, "Score must be <= 100");
         require(!hasMinted[recipient], "Address already has a badge");
 
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter;
+        _tokenIdCounter++;
 
         _safeMint(recipient, tokenId);
         _setTokenURI(tokenId, tokenURI);
@@ -158,7 +155,7 @@ contract ReputationNFT is ERC721, ERC721URIStorage, Ownable {
      * @return uint256 Total supply
      */
     function totalSupply() public view returns (uint256) {
-        return _tokenIdCounter.current() - 1;
+        return _tokenIdCounter - 1;
     }
 
     /**
