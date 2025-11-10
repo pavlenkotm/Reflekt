@@ -1,12 +1,18 @@
 import { ethers } from 'ethers';
-import { createPublicClient, createWalletClient, http, parseEther } from 'viem';
+import { createPublicClient, http } from 'viem';
 import { mainnet, sepolia } from 'viem/chains';
-import { privateKeyToAccount } from 'viem/accounts';
 
 /**
  * Web3 Wallet Connection Utilities
  * Demonstrates modern TypeScript patterns for Ethereum interaction
  */
+
+// Extend Window interface for MetaMask
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 
 // Types
 interface WalletInfo {
@@ -161,17 +167,12 @@ export class ContractInteractor {
  */
 export class ViemClient {
   private publicClient;
-  private walletClient;
 
   constructor(chain = mainnet) {
     this.publicClient = createPublicClient({
       chain,
       transport: http(),
     });
-
-    // For wallet operations, you'd typically use a connector like wagmi
-    // This is a simplified example
-    this.walletClient = null;
   }
 
   /**
@@ -196,9 +197,9 @@ export class ViemClient {
     address: `0x${string}`;
     abi: any[];
     functionName: string;
-    args?: any[];
+    args?: readonly any[];
   }): Promise<any> {
-    return await this.publicClient.readContract(params);
+    return await this.publicClient.readContract(params as any);
   }
 
   /**
@@ -290,7 +291,7 @@ export async function exampleUsage() {
   console.log('Token balance:', balance.toString());
 
   // Using Viem
-  const viem = new ViemClient(sepolia);
+  const viem = new ViemClient(sepolia as any);
   const blockNumber = await viem.getBlockNumber();
   console.log('Current block:', blockNumber);
 }
