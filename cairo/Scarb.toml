@@ -1,0 +1,16 @@
+[package]
+name = "reflekt_cairo"
+version = "0.1.0"
+edition = "2023_11"
+
+[dependencies]
+starknet = ">=2.4.0"
+
+[[target.starknet-contract]]
+sierra = true
+casm = true
+
+[scripts]
+test = "scarb test"
+build = "scarb build"
+fmt = "scarb fmt"

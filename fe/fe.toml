@@ -1,0 +1,7 @@
+[project]
+name = "reflekt_fe_token"
+version = "0.1.0"
+authors = ["Reflekt Team"]
+
+[build]
+optimize = true
