@@ -1,0 +1,202 @@
+// ERC-20 Token implementation in Fe
+contract ERC20Token:
+    // Storage
+    _balances: Map<address, u256>
+    _allowances: Map<address, Map<address, u256>>
+    _total_supply: u256
+    _name: String<100>
+    _symbol: String<10>
+    _decimals: u8
+    _owner: address
+
+    // Events
+    event Transfer:
+        idx sender: address
+        idx recipient: address
+        value: u256
+
+    event Approval:
+        idx owner: address
+        idx spender: address
+        value: u256
+
+    event Mint:
+        idx to: address
+        amount: u256
+
+    event Burn:
+        idx from: address
+        amount: u256
+
+    // Constructor
+    pub fn __init__(
+        mut self,
+        name: String<100>,
+        symbol: String<10>,
+        decimals: u8,
+        initial_supply: u256
+    ):
+        self._name = name
+        self._symbol = symbol
+        self._decimals = decimals
+        self._owner = msg.sender
+        self._total_supply = initial_supply
+        self._balances[msg.sender] = initial_supply
+
+        emit Transfer(
+            sender: address(0),
+            recipient: msg.sender,
+            value: initial_supply
+        )
+
+    // View Functions
+    pub fn name(self) -> String<100>:
+        return self._name
+
+    pub fn symbol(self) -> String<10>:
+        return self._symbol
+
+    pub fn decimals(self) -> u8:
+        return self._decimals
+
+    pub fn total_supply(self) -> u256:
+        return self._total_supply
+
+    pub fn balance_of(self, account: address) -> u256:
+        return self._balances[account]
+
+    pub fn allowance(self, owner: address, spender: address) -> u256:
+        return self._allowances[owner][spender]
+
+    pub fn owner(self) -> address:
+        return self._owner
+
+    // State-Changing Functions
+    pub fn transfer(mut self, recipient: address, amount: u256) -> bool:
+        assert msg.sender != address(0), "transfer from zero address"
+        assert recipient != address(0), "transfer to zero address"
+        assert self._balances[msg.sender] >= amount, "insufficient balance"
+
+        self._balances[msg.sender] -= amount
+        self._balances[recipient] += amount
+
+        emit Transfer(
+            sender: msg.sender,
+            recipient: recipient,
+            value: amount
+        )
+
+        return true
+
+    pub fn approve(mut self, spender: address, amount: u256) -> bool:
+        assert msg.sender != address(0), "approve from zero address"
+        assert spender != address(0), "approve to zero address"
+
+        self._allowances[msg.sender][spender] = amount
+
+        emit Approval(
+            owner: msg.sender,
+            spender: spender,
+            value: amount
+        )
+
+        return true
+
+    pub fn transfer_from(
+        mut self,
+        sender: address,
+        recipient: address,
+        amount: u256
+    ) -> bool:
+        assert sender != address(0), "transfer from zero address"
+        assert recipient != address(0), "transfer to zero address"
+        assert self._balances[sender] >= amount, "insufficient balance"
+
+        let current_allowance: u256 = self._allowances[sender][msg.sender]
+        assert current_allowance >= amount, "insufficient allowance"
+
+        self._allowances[sender][msg.sender] = current_allowance - amount
+        self._balances[sender] -= amount
+        self._balances[recipient] += amount
+
+        emit Transfer(
+            sender: sender,
+            recipient: recipient,
+            value: amount
+        )
+
+        return true
+
+    pub fn increase_allowance(mut self, spender: address, added_value: u256) -> bool:
+        assert spender != address(0), "increase allowance to zero address"
+
+        let current_allowance: u256 = self._allowances[msg.sender][spender]
+        self._allowances[msg.sender][spender] = current_allowance + added_value
+
+        emit Approval(
+            owner: msg.sender,
+            spender: spender,
+            value: current_allowance + added_value
+        )
+
+        return true
+
+    pub fn decrease_allowance(mut self, spender: address, subtracted_value: u256) -> bool:
+        assert spender != address(0), "decrease allowance to zero address"
+
+        let current_allowance: u256 = self._allowances[msg.sender][spender]
+        assert current_allowance >= subtracted_value, "decreased allowance below zero"
+
+        self._allowances[msg.sender][spender] = current_allowance - subtracted_value
+
+        emit Approval(
+            owner: msg.sender,
+            spender: spender,
+            value: current_allowance - subtracted_value
+        )
+
+        return true
+
+    // Owner Functions
+    pub fn mint(mut self, to: address, amount: u256):
+        assert msg.sender == self._owner, "only owner can mint"
+        assert to != address(0), "mint to zero address"
+
+        self._total_supply += amount
+        self._balances[to] += amount
+
+        emit Mint(to: to, amount: amount)
+        emit Transfer(
+            sender: address(0),
+            recipient: to,
+            value: amount
+        )
+
+    pub fn burn(mut self, amount: u256):
+        assert self._balances[msg.sender] >= amount, "burn amount exceeds balance"
+
+        self._balances[msg.sender] -= amount
+        self._total_supply -= amount
+
+        emit Burn(from: msg.sender, amount: amount)
+        emit Transfer(
+            sender: msg.sender,
+            recipient: address(0),
+            value: amount
+        )
+
+    pub fn burn_from(mut self, account: address, amount: u256):
+        let current_allowance: u256 = self._allowances[account][msg.sender]
+        assert current_allowance >= amount, "burn amount exceeds allowance"
+        assert self._balances[account] >= amount, "burn amount exceeds balance"
+
+        self._allowances[account][msg.sender] = current_allowance - amount
+        self._balances[account] -= amount
+        self._total_supply -= amount
+
+        emit Burn(from: account, amount: amount)
+        emit Transfer(
+            sender: account,
+            recipient: address(0),
+            value: amount
+        )

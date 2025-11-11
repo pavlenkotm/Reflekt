@@ -1,0 +1,12 @@
+[project]
+name = "reflekt-token"
+authors = ["Reflekt Team"]
+description = "SIP-010 compliant fungible token on Stacks"
+telemetry = false
+
+[contracts.sip-010-token]
+path = "contracts/sip-010-token.clar"
+
+[repl]
+costs_version = 2
+parser_version = 2
