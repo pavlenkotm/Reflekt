@@ -1,6 +1,11 @@
-# 🔵 Go - Ethereum Signature Verifier
+# 🔵 Go - Blockchain Development
 
-High-performance Ethereum utilities built with Go and go-ethereum, demonstrating signature verification, key management, and cryptographic operations.
+High-performance blockchain utilities and frameworks built with Go, including Ethereum signature verification and Cosmos SDK modules.
+
+## 📦 Projects
+
+- **[Ethereum Signature Verifier](./signature_verifier.go)** - ECDSA signature verification with go-ethereum
+- **[Cosmos SDK Token Module](./cosmos-sdk/)** - Custom token module for Cosmos-based blockchains
 
 ## 📋 Overview
 

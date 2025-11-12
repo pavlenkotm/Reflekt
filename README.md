@@ -1,12 +1,12 @@
 # 🌐 Web3 Multi-Language Repository
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Languages](https://img.shields.io/badge/languages-24+-blue.svg)
+![Languages](https://img.shields.io/badge/languages-25+-blue.svg)
 ![Commits](https://img.shields.io/badge/commits-40+-orange.svg)
 ![CI](https://github.com/pavlenkotm/Reflekt/workflows/CI%2FCD%20Pipeline/badge.svg)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-**A comprehensive Web3 development playground showcasing professional smart contracts, blockchain tools, and DApps across 24+ programming languages and exotic blockchain ecosystems.**
+**A comprehensive Web3 development playground showcasing professional smart contracts, blockchain tools, and DApps across 25+ programming languages and exotic blockchain ecosystems.**
 
 Perfect for learning, reference, or jumpstarting your next Web3 project!
 
@@ -16,7 +16,7 @@ Perfect for learning, reference, or jumpstarting your next Web3 project!
 
 This repository demonstrates **production-ready** Web3 code in multiple ecosystems:
 
-- **Smart Contract Languages**: Solidity, Vyper, Move, Plutus (Haskell), Cairo (StarkNet), Sway (Fuel), Fe (EVM), Motoko (ICP), Yul (Low-level EVM), Clarity (Stacks)
+- **Smart Contract Languages**: Solidity, Vyper, Move, Plutus (Haskell), Cairo (StarkNet), Ink! (Polkadot), Sway (Fuel), Fe (EVM), Motoko (ICP), Yul (Low-level EVM), Clarity (Stacks)
 - **Systems Programming**: Rust, Go, C++, Zig
 - **Web & Mobile**: TypeScript, JavaScript, Swift, Java
 - **Scripting & Automation**: Python, Ruby, Bash
@@ -40,6 +40,7 @@ Reflekt/
 ├── rust/              # Solana Anchor program + tests
 ├── move/              # Aptos token swap DEX
 ├── cairo/             # StarkNet ERC-20 (ZK-rollups)
+├── ink/               # Polkadot/Substrate Wasm contracts
 ├── sway/              # Fuel Network token (UTXO model)
 ├── fe/                # Python-inspired EVM token
 ├── motoko/            # Internet Computer canister
@@ -48,7 +49,7 @@ Reflekt/
 ├── typescript/        # Ethers.js & Viem utilities + tests
 ├── javascript/        # Web3.js wallet manager + tests
 ├── python/            # Web3.py CLI tools + tests
-├── go/                # Ethereum signature verifier + tests
+├── go/                # Ethereum utilities + Cosmos SDK module
 ├── cpp/               # Keccak256 cryptographic utilities
 ├── java/              # Web3j wallet manager
 ├── swift/             # iOS/macOS WalletKit
@@ -194,6 +195,7 @@ public entry fun swap_x_to_y<CoinX, CoinY>(
 | Rust       | Solana programs      | Very High   | Hard       | ⭐⭐⭐⭐  |
 | Move       | Aptos/Sui contracts  | High        | Medium     | ⭐⭐⭐    |
 | Cairo      | StarkNet ZK-rollups  | High        | Hard       | ⭐⭐⭐    |
+| Ink!       | Polkadot Wasm        | High        | Hard       | ⭐⭐⭐    |
 | Sway       | Fuel UTXO contracts  | Very High   | Medium     | ⭐⭐      |
 | Fe         | Python-like EVM      | Medium      | Easy       | ⭐⭐      |
 | Motoko     | Internet Computer    | Medium      | Medium     | ⭐⭐⭐    |
@@ -201,7 +203,7 @@ public entry fun swap_x_to_y<CoinX, CoinY>(
 | Clarity    | Stacks Bitcoin L2    | Medium      | Medium     | ⭐⭐⭐    |
 | TypeScript | DApp frontends       | Medium      | Easy       | ⭐⭐⭐⭐⭐ |
 | Python     | Automation scripts   | Medium      | Easy       | ⭐⭐⭐⭐⭐ |
-| Go         | Backend services     | Very High   | Medium     | ⭐⭐⭐⭐  |
+| Go         | Cosmos SDK/Backend   | Very High   | Medium     | ⭐⭐⭐⭐  |
 | C++        | Crypto primitives    | Extreme     | Hard       | ⭐⭐⭐    |
 | Java       | Enterprise/Android   | High        | Medium     | ⭐⭐⭐⭐  |
 | Swift      | iOS wallets          | High        | Medium     | ⭐⭐⭐    |
