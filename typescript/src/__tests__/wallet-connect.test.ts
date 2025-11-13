@@ -142,7 +142,7 @@ describe('ViemClient', () => {
 describe('utils', () => {
   describe('isValidAddress', () => {
     it('should validate correct Ethereum addresses', () => {
-      expect(utils.isValidAddress('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0')).toBe(true);
+      expect(utils.isValidAddress('0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed')).toBe(true);
       expect(utils.isValidAddress('0x0000000000000000000000000000000000000000')).toBe(true);
     });
 
