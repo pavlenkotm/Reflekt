@@ -140,7 +140,7 @@ describe('WalletManager', function () {
 
   describe('Utility Functions', function () {
     it('should validate Ethereum addresses', function () {
-      expect(manager.isValidAddress('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0')).to.be.true;
+      expect(manager.isValidAddress('0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed')).to.be.true;
       expect(manager.isValidAddress('0x0000000000000000000000000000000000000000')).to.be.true;
       expect(manager.isValidAddress('0x123')).to.be.false;
       expect(manager.isValidAddress('invalid')).to.be.false;
